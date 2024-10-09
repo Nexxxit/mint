@@ -1,7 +1,10 @@
+import Balance from "../components/Balance";
 
+export default function Dashboard() {
 
-export default function Dashboard(){
-    return(
-        <></>
-    );
+  return (
+    <>
+      <Balance balance={123456}/>
+    </>
+  );
 }

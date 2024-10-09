@@ -1,6 +1,7 @@
 import { Container, Navbar, Nav, Button, Modal } from "react-bootstrap";
 import { Link, useLocation } from "react-router-dom";
 import { useState } from "react";
+import logo from '../logo.svg';
 
 export default function Header() {
   const [isDarkTheme, setIsDarkTheme] = useState(false);
@@ -17,8 +18,8 @@ export default function Header() {
         <Container>
           <Navbar.Brand as={Link} to="/">
             <img
-              alt=""
-              src=""
+              alt="Logo"
+              src={logo}
               width={30}
               height={30}
               className="d-inline-block align-top"

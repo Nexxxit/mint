@@ -6,7 +6,7 @@ export default function MainLayout() {
   return (
     <>
       <Header />
-      <main>
+      <main className="container-fluid ps-5 pe-5">
         <Outlet />
       </main>
       <Footer />
