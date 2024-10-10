@@ -37,7 +37,7 @@ export default function Balance({ balance }) {
 
   return (
     <>
-      <div className="border border-secondary-subtle rounded-4 p-3 pt-1 pb-1 mt-5 col-3 shadow-sm">
+      <div className="border border-secondary-subtle rounded-4 p-3 pt-1 pb-1 shadow-sm">
         <div className="d-flex justify-content-between align-items-center">
           <p className="text-light-emphasis m-0">Текущий баланс:</p>
           <Button variant="link" onClick={handleClickVisible}>
