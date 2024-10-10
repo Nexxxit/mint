@@ -1,17 +1,29 @@
 import CurrencyRubleIcon from "@mui/icons-material/CurrencyRuble";
 import AttachMoneyIcon from "@mui/icons-material/AttachMoney";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button, Form } from "react-bootstrap";
+import getCurrencyRate from "./CurrencyService";
 
 export default function Balance({ balance }) {
   const [isVisible, setIsVisible] = useState(false);
   const [currency, setCurrency] = useState("ruble");
   const [balanceValue, setBalanceValue] = useState(balance);
-  const [currencyRate, setCurrencyRate] = useState(100);
+  const [currencyRate, setCurrencyRate] = useState(0);
 
   const handleClickVisible = () => {
     setIsVisible(!isVisible);
   };
+
+  useEffect(() => {
+    const fetchCurrencyRate = async () => {
+      const rate = await getCurrencyRate();
+      if (rate !== null) {
+        setCurrencyRate(rate);
+        setBalanceValue(balance);
+      }
+    };
+    fetchCurrencyRate();
+  }, [balance]);
 
   const changeCurrency = () => {
     if (currency === "ruble") {

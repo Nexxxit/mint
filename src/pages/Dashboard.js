@@ -4,7 +4,7 @@ export default function Dashboard() {
 
   return (
     <>
-      <Balance balance={123456}/>
+      <Balance balance={120500}/>
     </>
   );
 }
