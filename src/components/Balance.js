@@ -63,7 +63,7 @@ export default function Balance({ balance }) {
               </>
             )}
           </p>
-          <span className="col-2">
+          <span className="col-2" style={{minWidth: 60 + 'px'}}>
             <Form.Select
               size="sm"
               className="fw-medium rounded-4"

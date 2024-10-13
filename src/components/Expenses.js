@@ -4,8 +4,10 @@ export default function Expenses() {
   return (
     <>
       <div className="d-flex align-items-center justify-content-center gap-2 p-3">
-        <span className="text-nowrap fs-4 text-center fw-light">Расходы за</span>
-        <span className="col-4">
+        <span className="text-nowrap fs-4 text-center fw-light">
+          Расходы за
+        </span>
+        <span className="col-4" style={{minWidth: 100 + 'px'}}>
           <Form.Select
             size="sm"
             className="rounded-4 fw-medium"

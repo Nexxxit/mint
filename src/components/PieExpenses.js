@@ -1,3 +1,4 @@
+import { Block } from '@mui/icons-material';
 import React, { PureComponent } from 'react';
 import { PieChart, Pie, Sector, ResponsiveContainer, Cell, Legend } from 'recharts';
 
@@ -89,14 +90,15 @@ class ExpensesPieChart extends PureComponent {
 
   render() {
     return (
-      <ResponsiveContainer width="100%" height={400}>
+      <div style={{ width: "100%", height: "400px", zIndex: '2' }}>
+      <ResponsiveContainer>
         <PieChart>
           <Pie
             
             activeIndex={this.state.activeIndex}
             activeShape={renderActiveShape}
             data={data}
-            cx="20%"
+            cx="50%"
             cy="50%"
             innerRadius={120}
             outerRadius={140}
@@ -109,11 +111,10 @@ class ExpensesPieChart extends PureComponent {
             ))}
           </Pie>
           <Legend
-            verticalAlign="top"
+            verticalAlign="bottom"
             align='left'
-            layout='vertical'
+            layout='horizontal'
             wrapperStyle={{
-              padding: '16px',
               fontSize: '1.1rem',
             }}
             height={36}
@@ -126,6 +127,7 @@ class ExpensesPieChart extends PureComponent {
           />
         </PieChart>
       </ResponsiveContainer>
+      </div>
     );
   }
 }
