@@ -1,12 +1,15 @@
 import { Container, Navbar, Nav, Button, Modal } from "react-bootstrap";
 import { Link, useLocation } from "react-router-dom";
-import { useState } from "react";
+import { useState, useContext } from "react";
+import { AuthContext } from "../contexts/AuthContext";
 import logo from '../logo.svg';
 
 export default function Header() {
   const [isDarkTheme, setIsDarkTheme] = useState(false);
   const [modalShow, setModalShow] = useState(false);
   const location = useLocation();
+
+  const { isAuthenticated, logout } = useContext(AuthContext);
 
   const handleClickTheme = () => {
     setIsDarkTheme(!isDarkTheme);
@@ -26,7 +29,7 @@ export default function Header() {
             />{" "}
             Mint
           </Navbar.Brand>
-          <Nav className="me-auto gap-2">
+          {isAuthenticated() && <Nav className="me-auto gap-2">
             <Nav.Link as={Link} to="/" active={location.pathname === '/'}>
               Dashboard
             </Nav.Link>
@@ -39,7 +42,7 @@ export default function Header() {
             <Nav.Link as={Link} to="/categories" active={location.pathname === '/categories'}>
               Категории
             </Nav.Link>
-          </Nav>
+          </Nav>}
           <Nav className="gap-3">
             <Button variant="light" className="fs-5" onClick={handleClickTheme}>
               {isDarkTheme ? (
@@ -48,13 +51,13 @@ export default function Header() {
                 <i className="bi bi-moon"></i>
               )}
             </Button>
-            <Button
+           {isAuthenticated() &&  <Button
               variant="light"
               className="text-dark fs-5"
               title="Настройки"
             >
               <i className="bi bi-gear"></i>
-            </Button>
+            </Button>}
             <Button
               variant="outline-secondary"
               className="fs-5"

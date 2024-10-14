@@ -51,9 +51,9 @@ export default class BalanceAreaChart extends PureComponent {
             className="fw-medium rounded-4"
             aria-label="Period"
           >
-            <option value="30">30 дней</option>
-            <option value="90">90 дней</option>
-            <option value="180">180 дней</option>
+            <option value="30 days">30 дней</option>
+            <option value="90 days">90 дней</option>
+            <option value="180 days">180 дней</option>
           </Form.Select>
         </div>
         <div style={{ width: "100%", height: "400px" }}>

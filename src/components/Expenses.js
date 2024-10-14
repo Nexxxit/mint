@@ -7,7 +7,7 @@ export default function Expenses() {
         <span className="text-nowrap fs-4 text-center fw-light">
           Расходы за
         </span>
-        <span className="col-4" style={{minWidth: 100 + 'px'}}>
+        <span className="col-4" style={{ minWidth: 100 + "px" }}>
           <Form.Select
             size="sm"
             className="rounded-4 fw-medium"
