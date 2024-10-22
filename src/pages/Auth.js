@@ -1,7 +1,18 @@
-import { Form, Button, ToggleButtonGroup, ToggleButton } from "react-bootstrap";
+import { ToggleButtonGroup, ToggleButton } from "react-bootstrap";
 import logo from "../logo.svg";
+import { useState } from "react";
+import Login from "../components/Login";
+import Registration from "../components/Registration";
 
 export default function Auth() {
+  const [regForm, setRegForm] = useState(false);
+  const [value, setValue] = useState(1);
+
+  const handleChangeRadio = (val) => {
+    setValue(val);
+    setRegForm(val === 2);
+  };
+
   return (
     <>
       <div className="d-flex mt-5">
@@ -10,7 +21,8 @@ export default function Auth() {
             className="d-flex"
             type="radio"
             name="auth"
-            defaultValue={1}
+            value={value}
+            onChange={handleChangeRadio}
           >
             <ToggleButton
               className="col-6 rounded-start-4"
@@ -49,30 +61,7 @@ export default function Auth() {
           </div>
         </div>
         <div className="col-6 p-3 border border-black rounded-4">
-          <Form className="d-flex flex-column gap-3">
-            <Form.Group controlId="email">
-              <Form.Label>Почта</Form.Label>
-              <Form.Control
-                type="email"
-                placeholder="Введите электронную почту"
-              />
-            </Form.Group>
-            <Form.Group controlId="password">
-              <span>
-                <Form.Label>Пароль</Form.Label>
-                <Button variant="link">
-                  <i className="bi bi-eye"></i>
-                </Button>
-              </span>
-              <Form.Control type="password" placeholder="Введите пароль" />
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="rememberMe">
-              <Form.Check type="checkbox" label="Запомнить меня" />
-            </Form.Group>
-            <Button variant="primary" type="submit">
-              Войти
-            </Button>
-          </Form>
+          {regForm ? <Registration /> : <Login />}
         </div>
       </div>
     </>

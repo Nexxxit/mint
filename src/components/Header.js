@@ -1,18 +1,23 @@
 import { Container, Navbar, Nav, Button, Modal } from "react-bootstrap";
-import { Link, useLocation } from "react-router-dom";
-import { useState, useContext } from "react";
-import { AuthContext } from "../contexts/AuthContext";
-import logo from '../logo.svg';
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import logo from "../logo.svg";
 
 export default function Header() {
   const [isDarkTheme, setIsDarkTheme] = useState(false);
   const [modalShow, setModalShow] = useState(false);
   const location = useLocation();
 
-  const { isAuthenticated, logout } = useContext(AuthContext);
-
   const handleClickTheme = () => {
     setIsDarkTheme(!isDarkTheme);
+  };
+
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/auth");
+    setModalShow(false);
   };
 
   return (
@@ -29,20 +34,32 @@ export default function Header() {
             />{" "}
             Mint
           </Navbar.Brand>
-          {isAuthenticated() && <Nav className="me-auto gap-2">
-            <Nav.Link as={Link} to="/" active={location.pathname === '/'}>
+          <Nav className="me-auto gap-2">
+            <Nav.Link as={Link} to="/" active={location.pathname === "/"}>
               Dashboard
             </Nav.Link>
-            <Nav.Link as={Link} to="/transactions" active={location.pathname === '/transactions'}>
+            <Nav.Link
+              as={Link}
+              to="/transactions"
+              active={location.pathname === "/transactions"}
+            >
               Транзакции
             </Nav.Link>
-            <Nav.Link as={Link} to="/budgeting" active={location.pathname === '/budgeting'}>
+            <Nav.Link
+              as={Link}
+              to="/budgeting"
+              active={location.pathname === "/budgeting"}
+            >
               Бюджетирование
             </Nav.Link>
-            <Nav.Link as={Link} to="/categories" active={location.pathname === '/categories'}>
+            <Nav.Link
+              as={Link}
+              to="/categories"
+              active={location.pathname === "/categories"}
+            >
               Категории
             </Nav.Link>
-          </Nav>}
+          </Nav>
           <Nav className="gap-3">
             <Button variant="light" className="fs-5" onClick={handleClickTheme}>
               {isDarkTheme ? (
@@ -51,13 +68,13 @@ export default function Header() {
                 <i className="bi bi-moon"></i>
               )}
             </Button>
-           {isAuthenticated() &&  <Button
+            <Button
               variant="light"
               className="text-dark fs-5"
               title="Настройки"
             >
               <i className="bi bi-gear"></i>
-            </Button>}
+            </Button>
             <Button
               variant="outline-secondary"
               className="fs-5"
@@ -69,7 +86,11 @@ export default function Header() {
           </Nav>
         </Container>
       </Navbar>
-      <LeaveModal show={modalShow} onHide={() => setModalShow(false)} />
+      <LeaveModal
+        show={modalShow}
+        onHide={() => setModalShow(false)}
+        onLogout={handleLogout}
+      />
     </header>
   );
 }
@@ -91,7 +112,7 @@ function LeaveModal(props) {
         <Button variant="secondary" onClick={props.onHide}>
           Отмена
         </Button>
-        <Button variant="danger" onClick={props.onHide}>
+        <Button variant="danger" onClick={props.onLogout}>
           Выйти
         </Button>
       </Modal.Footer>

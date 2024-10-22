@@ -1,34 +1,30 @@
 import { BrowserRouter, useRoutes } from "react-router-dom";
-import { useContext } from "react";
 import Dashboard from "./pages/Dashboard";
 import Transactions from "./pages/Transactions";
 import Categories from "./pages/Categories";
 import Settings from "./pages/Settings";
 import Budgeting from "./pages/Budgeting";
 import MainLayout from "./layout/MainLayout";
-import AuthLayout from "./layout/AuthLayout,";
+import ProtectedRoute from "./components/ProtectedRoute";
 import Auth from "./pages/Auth";
-import { AuthProvider, AuthContext } from "./contexts/AuthContext";
 
 const AppRoutes = () => {
-  const { isAuthenticated } = useContext(AuthContext);
 
   return useRoutes([
     {
       path: "/",
       element: <MainLayout />,
       children: [
-        { index: true, element: <Dashboard /> },
-        { path: "/transactions", element: <Transactions /> },
-        { path: "/budgeting", element: <Budgeting /> },
-        { path: "/categories", element: <Categories /> },
-        { path: "/settings", element: <Settings /> },
+        { index: true, element: <ProtectedRoute><Dashboard /></ProtectedRoute> },
+        { path: "/transactions", element: <ProtectedRoute><Transactions /></ProtectedRoute> },
+        { path: "/budgeting", element: <ProtectedRoute><Budgeting /></ProtectedRoute> },
+        { path: "/categories", element: <ProtectedRoute><Categories /></ProtectedRoute> },
+        { path: "/settings", element: <ProtectedRoute><Settings /></ProtectedRoute> },
       ],
-      guard: isAuthenticated,
     },
     {
       path: "/auth",
-      element: <AuthLayout />,
+      element: <MainLayout />,
       children: [{ index: true, element: <Auth /> }],
     },
   ]);
