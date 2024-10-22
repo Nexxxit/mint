@@ -1,11 +1,16 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Form, Button } from "react-bootstrap";
+import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../contexts/AuthProvider";
 
 export default function Login() {
+  const {login} = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const [isVisiblePassword, setVisiblePassword] = useState(false);
+
+  const navigate = useNavigate();
 
   const handleClickVisible = () => {
     setVisiblePassword(!isVisiblePassword);
@@ -14,21 +19,25 @@ export default function Login() {
   const handleLoginSubmit = async (e) => {
     e.preventDefault();
 
-    const response = await fetch("http://localhost:5000/api/login", {
-      method: "POST",
-      headers: {
-        "Content-type": "application/json",
-      },
-      body: JSON.stringify({ email, password }),
-    });
+    try {
+      const response = await fetch("http://localhost:5000/api/login", {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
 
-    const data = await response.json();
+      const data = await response.json();
 
-    if (response.ok) {
-      localStorage.setItem("token", data.token);
-      console.log("Login succesful!");
-    } else {
-      setError(data.message);
+      if (response.ok) {
+        login(data.user, data.token);
+        navigate("/");
+      } else {
+        setError(data.message);
+      }
+    } catch (error) {
+      setError("Ошибка при входе. Попробуйте ещё раз.");
     }
   };
 
@@ -46,6 +55,7 @@ export default function Login() {
             placeholder="Введите электронную почту"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            required
           />
         </Form.Group>
         <Form.Group controlId="password">
@@ -60,6 +70,7 @@ export default function Login() {
             placeholder="Введите пароль"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            required
           />
         </Form.Group>
         <Form.Group className="mb-3" controlId="rememberMe">

@@ -7,6 +7,7 @@ import Budgeting from "./pages/Budgeting";
 import MainLayout from "./layout/MainLayout";
 import ProtectedRoute from "./components/ProtectedRoute";
 import Auth from "./pages/Auth";
+import AuthProvider from "./contexts/AuthProvider";
 
 const AppRoutes = () => {
 

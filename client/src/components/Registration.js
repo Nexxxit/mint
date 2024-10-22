@@ -1,33 +1,41 @@
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { Form, Button } from "react-bootstrap";
+import { AuthContext } from "../contexts/AuthProvider";
+import { useNavigate } from "react-router-dom";
 
 export default function Registration() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(false);
+  const { login } = useContext(AuthContext);
+  const navigate = useNavigate();
 
   const [isVisiblePassword, setVisiblePassword] = useState(false);
   const [isVisibleConfirmPassword, setVisibleConfirmPassword] = useState(false);
 
-  const handleRegistrationSubmit = async (e) => {
+  const handleRegisterSubmit = async (e) => {
     e.preventDefault();
 
-    const response = await fetch("http://localhost:5000/api/register", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ email, password }),
-    });
-    const data = await response.json();
+    try {
+      const response = await fetch("http://localhost:5000/api/register", {
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+        body: JSON.stringify({ email, password }),
+      });
 
-    if (response.ok) {
-      setSuccess(true);
-      setError(null);
-      console.log("Registration successful!");
-    } else {
-      setError(data.message);
+      const data = await response.json();
+
+      if (response.ok) {
+       
+        login(data.user, data.token);
+        navigate("/");
+      } else {
+        setError(data.message);
+      }
+    } catch (error) {
+      setError("Ошибка при регистрации. Попробуйте ещё раз.");
     }
   };
 
@@ -41,7 +49,7 @@ export default function Registration() {
 
   return (
     <>
-      <Form controlId="registrationForm" className="d-flex flex-column gap-3" onSubmit={handleRegistrationSubmit}>
+      <Form controlId="registerForm" className="d-flex flex-column gap-3" onSubmit={handleRegisterSubmit}>
         <Form.Group controlId="email">
           <Form.Label>Почта</Form.Label>
           <Form.Control
@@ -49,6 +57,7 @@ export default function Registration() {
             placeholder="Введите электронную почту"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            required
           />
         </Form.Group>
         <Form.Group controlId="password">
@@ -67,6 +76,7 @@ export default function Registration() {
             placeholder="Введите пароль"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            required
           />
         </Form.Group>
         <Form.Group controlId="passwordConfirm">
@@ -83,6 +93,7 @@ export default function Registration() {
           <Form.Control
             type={isVisibleConfirmPassword ? "text" : "password"}
             placeholder="Повторите пароль"
+            required
           />
         </Form.Group>
         <Button variant="primary" type="submit">
@@ -90,7 +101,6 @@ export default function Registration() {
         </Button>
       </Form>
       {error && <p>{error}</p>}
-      {success && <p>Регистрация завершена!</p>}
     </>
   );
 }
