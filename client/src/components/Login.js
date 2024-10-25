@@ -1,14 +1,15 @@
-import { useState, useContext } from "react";
-import { Form, Button } from "react-bootstrap";
+import { useState, useEffect, useContext } from "react";
+import { Form, Button, Alert } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../contexts/AuthProvider";
 
 export default function Login() {
-  const {login} = useContext(AuthContext);
+  const { login } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
   const [isVisiblePassword, setVisiblePassword] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
 
   const navigate = useNavigate();
 
@@ -35,11 +36,23 @@ export default function Login() {
         navigate("/");
       } else {
         setError(data.message);
+        setShowAlert(true);
       }
     } catch (error) {
       setError("Ошибка при входе. Попробуйте ещё раз.");
+      setShowAlert(true);
     }
   };
+
+  useEffect(() => {
+    if (showAlert) {
+      const timer = setTimeout(() => {
+        setShowAlert(false);
+      }, 5000);
+
+      return () => clearTimeout(timer);
+    }
+  }, [showAlert]);
 
   return (
     <>
@@ -62,7 +75,11 @@ export default function Login() {
           <span>
             <Form.Label>Пароль</Form.Label>
             <Button variant="link" onClick={handleClickVisible}>
-              {isVisiblePassword ? (<i className="bi bi-eye-slash"></i>) : (<i className="bi bi-eye"></i>)}
+              {isVisiblePassword ? (
+                <i className="bi bi-eye-slash"></i>
+              ) : (
+                <i className="bi bi-eye"></i>
+              )}
             </Button>
           </span>
           <Form.Control
@@ -80,7 +97,13 @@ export default function Login() {
           Войти
         </Button>
       </Form>
-      {error && <p>{error}</p>}
+      {showAlert && (
+        <>
+          <Alert className="mt-4 mb-0" variant="danger">
+            <p className="mb-0">{error}</p>
+          </Alert>
+        </>
+      )}
     </>
   );
 }
